@@ -5,10 +5,11 @@ import { logger } from "./log.js";
 
 // Script variables.
 
-// Count the number of GitHub API tokens available.
-const PATs = Object.keys(process.env).filter((key) =>
-  /PAT_\d*$/.exec(key),
-).length;
+// Count the number of GitLab API tokens available.
+// Supports GITLAB_TOKEN as a single token or PAT_1, PAT_2, ... for rotation.
+const PATs = process.env.GITLAB_TOKEN
+  ? 1
+  : Object.keys(process.env).filter((key) => /PAT_\d*$/.exec(key)).length;
 const RETRIES = process.env.NODE_ENV === "test" ? 7 : PATs;
 
 /**
@@ -26,28 +27,30 @@ const RETRIES = process.env.NODE_ENV === "test" ? 7 : PATs;
  */
 const retryer = async (fetcher, variables, retries = 0) => {
   if (!RETRIES) {
-    throw new CustomError("No GitHub API tokens found", CustomError.NO_TOKENS);
+    throw new CustomError("No GitLab API tokens found", CustomError.NO_TOKENS);
   }
 
   if (retries > RETRIES) {
     throw new CustomError(
-      "Downtime due to GitHub API rate limiting",
+      "Downtime due to GitLab API rate limiting",
       CustomError.MAX_RETRY,
     );
   }
 
   try {
-    // try to fetch with the first token since RETRIES is 0 index i'm adding +1
+    // Use GITLAB_TOKEN if set, otherwise rotate through PAT_N tokens
+    const token =
+      process.env.GITLAB_TOKEN || process.env[`PAT_${retries + 1}`];
+
     let response = await fetcher(
       variables,
       // @ts-ignore
-      process.env[`PAT_${retries + 1}`],
+      token,
       // used in tests for faking rate limit
       retries,
     );
 
     // react on both type and message-based rate-limit signals.
-    // https://github.com/anuraghazra/github-readme-stats/issues/4425
     const errors = response?.data?.errors;
     const errorType = errors?.[0]?.type;
     const errorMsg = errors?.[0]?.message || "";
@@ -55,15 +58,12 @@ const retryer = async (fetcher, variables, retries = 0) => {
       (errors && errorType === "RATE_LIMITED") || /rate limit/i.test(errorMsg);
 
     // if rate limit is hit increase the RETRIES and recursively call the retryer
-    // with username, and current RETRIES
     if (isRateLimited) {
       logger.log(`PAT_${retries + 1} Failed`);
       retries++;
-      // directly return from the function
       return retryer(fetcher, variables, retries);
     }
 
-    // finally return the response
     return response;
   } catch (err) {
     /** @type {any} */
@@ -75,7 +75,6 @@ const retryer = async (fetcher, variables, retries = 0) => {
     }
 
     // prettier-ignore
-    // also checking for bad credentials if any tokens gets invalidated
     const isBadCredential =
       e?.response?.data?.message === "Bad credentials";
     const isAccountSuspended =
@@ -84,7 +83,6 @@ const retryer = async (fetcher, variables, retries = 0) => {
     if (isBadCredential || isAccountSuspended) {
       logger.log(`PAT_${retries + 1} Failed`);
       retries++;
-      // directly return from the function
       return retryer(fetcher, variables, retries);
     }
 

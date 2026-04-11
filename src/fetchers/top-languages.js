@@ -1,59 +1,70 @@
 // @ts-check
-
-import { retryer } from "../common/retryer.js";
-import { logger } from "../common/log.js";
+import axios from "axios";
 import { excludeRepositories } from "../common/envs.js";
 import { CustomError, MissingParamError } from "../common/error.js";
-import { wrapTextMultiline } from "../common/fmt.js";
-import { request } from "../common/http.js";
 
-/**
- * Top languages fetcher object.
- *
- * @param {any} variables Fetcher variables.
- * @param {string} token GitHub token.
- * @returns {Promise<import("axios").AxiosResponse>} Languages fetcher response.
- */
-const fetcher = (variables, token) => {
-  return request(
-    {
-      query: `
-      query userInfo($login: String!) {
-        user(login: $login) {
-          # fetch only owner repos & not forks
-          repositories(ownerAffiliations: OWNER, isFork: false, first: 100) {
-            nodes {
-              name
-              languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
-                edges {
-                  size
-                  node {
-                    color
-                    name
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      `,
-      variables,
-    },
-    {
-      Authorization: `token ${token}`,
-    },
-  );
-};
+const GITLAB_REST_URL = "https://gitlab.com/api/v4";
 
 /**
  * @typedef {import("./types").TopLangData} TopLangData Top languages data.
  */
 
+const getToken = () => {
+  const token = process.env.GITLAB_TOKEN || process.env.PAT_1;
+  if (!token) throw new CustomError("No GitLab token found.", CustomError.NO_TOKENS);
+  return token;
+};
+
 /**
- * Fetch top languages for a given username.
+ * Fetch all projects for a user via REST.
  *
- * @param {string} username GitHub username.
+ * @param {string} username
+ * @param {string} token
+ * @returns {Promise<any[]>}
+ */
+const fetchUserProjects = async (username, token) => {
+  let page = 1;
+  let allProjects = [];
+  while (true) {
+    const res = await axios.get(
+      `${GITLAB_REST_URL}/users/${encodeURIComponent(username)}/projects`,
+      {
+        params: { per_page: 100, page },
+        headers: { "PRIVATE-TOKEN": token },
+      },
+    );
+    allProjects.push(...res.data);
+    const nextPage = res.headers["x-next-page"];
+    if (!nextPage) break;
+    page = parseInt(nextPage, 10);
+  }
+  return allProjects;
+};
+
+/**
+ * Fetch language breakdown for a single project.
+ * GitLab returns { "JavaScript": 67.5, "CSS": 32.5 } (percentages).
+ *
+ * @param {number} projectId
+ * @param {string} token
+ * @returns {Promise<Record<string, number>>}
+ */
+const fetchProjectLanguages = async (projectId, token) => {
+  try {
+    const res = await axios.get(
+      `${GITLAB_REST_URL}/projects/${projectId}/languages`,
+      { headers: { "PRIVATE-TOKEN": token } },
+    );
+    return res.data;
+  } catch (_) {
+    return {};
+  }
+};
+
+/**
+ * Fetch top languages for a given GitLab username.
+ *
+ * @param {string} username GitLab username.
  * @param {string[]} exclude_repo List of repositories to exclude.
  * @param {number} size_weight Weightage to be given to size.
  * @param {number} count_weight Weightage to be given to count.
@@ -69,93 +80,121 @@ const fetchTopLanguages = async (
     throw new MissingParamError(["username"]);
   }
 
-  const res = await retryer(fetcher, { login: username });
+  const token = getToken();
 
-  if (res.data.errors) {
-    logger.error(res.data.errors);
-    if (res.data.errors[0].type === "NOT_FOUND") {
-      throw new CustomError(
-        res.data.errors[0].message || "Could not fetch user.",
-        CustomError.USER_NOT_FOUND,
-      );
-    }
-    if (res.data.errors[0].message) {
-      throw new CustomError(
-        wrapTextMultiline(res.data.errors[0].message, 90, 1)[0],
-        res.statusText,
-      );
+  // 1. Get all user projects
+  let projects;
+  try {
+    projects = await fetchUserProjects(username, token);
+  } catch (err) {
+    if (err?.response?.status === 404) {
+      throw new CustomError("Could not fetch user.", CustomError.USER_NOT_FOUND);
     }
     throw new CustomError(
-      "Something went wrong while trying to retrieve the language data using the GraphQL API.",
-      CustomError.GRAPHQL_ERROR,
+      "Could not fetch user projects.",
+      CustomError.GITHUB_REST_API_ERROR,
     );
   }
 
-  let repoNodes = res.data.data.user.repositories.nodes;
-  /** @type {Record<string, boolean>} */
-  let repoToHide = {};
+  // 2. Filter out excluded repos
   const allExcludedRepos = [...exclude_repo, ...excludeRepositories];
+  const repoToHide = new Set(allExcludedRepos);
+  projects = projects.filter(
+    (p) =>
+      !repoToHide.has(p.name) &&
+      !p.forked_from_project &&
+      p.name.toLowerCase() !== username.toLowerCase(),
+  );
 
-  // populate repoToHide map for quick lookup
-  // while filtering out
-  if (allExcludedRepos) {
-    allExcludedRepos.forEach((repoName) => {
-      repoToHide[repoName] = true;
-    });
+  // 3. Fan out — fetch language data for each project in parallel
+  //    Cap concurrency to avoid hammering the API
+  const CHUNK_SIZE = 10;
+  const languageResults = [];
+  for (let i = 0; i < projects.length; i += CHUNK_SIZE) {
+    const chunk = projects.slice(i, i + CHUNK_SIZE);
+    const results = await Promise.all(
+      chunk.map((p) => fetchProjectLanguages(p.id, token)),
+    );
+    languageResults.push(...results);
   }
 
-  // filter out repositories to be hidden
-  repoNodes = repoNodes
-    .sort((a, b) => b.size - a.size)
-    .filter((name) => !repoToHide[name.name]);
+  // 4. Aggregate — GitLab returns percentages, so we treat each project's
+  //    percentage as a "size" unit and count how many projects use each language.
+  //    percentage as a "size" unit and count how many projects use each language.
+  /** @type {Record<string, { name: string, color: string, size: number, count: number }>} */
+  const langMap = {};
 
-  let repoCount = 0;
-
-  repoNodes = repoNodes
-    .filter((node) => node.languages.edges.length > 0)
-    // flatten the list of language nodes
-    .reduce((acc, curr) => curr.languages.edges.concat(acc), [])
-    .reduce((acc, prev) => {
-      // get the size of the language (bytes)
-      let langSize = prev.size;
-
-      // if we already have the language in the accumulator
-      // & the current language name is same as previous name
-      // add the size to the language size and increase repoCount.
-      if (acc[prev.node.name] && prev.node.name === acc[prev.node.name].name) {
-        langSize = prev.size + acc[prev.node.name].size;
-        repoCount += 1;
-      } else {
-        // reset repoCount to 1
-        // language must exist in at least one repo to be detected
-        repoCount = 1;
+  languageResults.forEach((langs) => {
+    Object.entries(langs).forEach(([name, percentage]) => {
+      if (!langMap[name]) {
+        langMap[name] = {
+          name,
+          color: getLanguageColor(name),
+          size: 0,
+          count: 0,
+        };
       }
-      return {
-        ...acc,
-        [prev.node.name]: {
-          name: prev.node.name,
-          color: prev.node.color,
-          size: langSize,
-          count: repoCount,
-        },
-      };
-    }, {});
-
-  Object.keys(repoNodes).forEach((name) => {
-    // comparison index calculation
-    repoNodes[name].size =
-      Math.pow(repoNodes[name].size, size_weight) *
-      Math.pow(repoNodes[name].count, count_weight);
+      langMap[name].size += /** @type {number} */ (percentage);
+      langMap[name].count += 1;
+    });
   });
 
-  const topLangs = Object.keys(repoNodes)
-    .sort((a, b) => repoNodes[b].size - repoNodes[a].size)
+  // 5. Apply weights (same formula as the GitHub version)
+  Object.keys(langMap).forEach((name) => {
+    langMap[name].size =
+      Math.pow(langMap[name].size, size_weight) *
+      Math.pow(langMap[name].count, count_weight);
+  });
+
+  // 6. Sort and return
+  const topLangs = Object.keys(langMap)
+    .sort((a, b) => langMap[b].size - langMap[a].size)
     .reduce((result, key) => {
-      result[key] = repoNodes[key];
+      result[key] = langMap[key];
       return result;
     }, {});
 
   return topLangs;
+};
+
+/**
+ * Best-effort language color lookup.
+ * GitLab REST doesn't return colors — we use a small map of common languages.
+ * Falls back to a neutral grey for unknowns.
+ *
+ * @param {string} name
+ * @returns {string} Hex color string.
+ */
+const getLanguageColor = (name) => {
+  const colors = {
+    JavaScript: "#f1e05a",
+    TypeScript: "#3178c6",
+    Python: "#3572A5",
+    Ruby: "#701516",
+    Java: "#b07219",
+    Go: "#00ADD8",
+    Rust: "#dea584",
+    "C++": "#f34b7d",
+    C: "#555555",
+    "C#": "#178600",
+    PHP: "#4F5D95",
+    Swift: "#F05138",
+    Kotlin: "#A97BFF",
+    Scala: "#c22d40",
+    Shell: "#89e051",
+    HTML: "#e34c26",
+    CSS: "#563d7c",
+    SCSS: "#c6538c",
+    Vue: "#41b883",
+    Svelte: "#ff3e00",
+    Dart: "#00B4AB",
+    Elixir: "#6e4a7e",
+    Haskell: "#5e5086",
+    Lua: "#000080",
+    R: "#198CE7",
+    "Jupyter Notebook": "#DA5B0B",
+  };
+  return colors[name] || "#858585";
 };
 
 export { fetchTopLanguages };

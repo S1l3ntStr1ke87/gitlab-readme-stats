@@ -11,7 +11,7 @@ import axios from "axios";
  */
 const request = (data, headers) => {
   return axios({
-    url: "https://api.github.com/graphql",
+    url: "https://gitlab.com/api/graphql",
     method: "post",
     headers,
     data,
