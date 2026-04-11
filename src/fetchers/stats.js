@@ -37,7 +37,7 @@ const statsFetcher = async ({ username }) => {
 };
 
 const getToken = () => {
-  const token = process.env.PAT_1 || process.env.PAT_2;
+  const token = process.env.GITLAB_TOKEN || process.env.PAT_1;
   if (!token) throw new CustomError("No GitLab token found.", CustomError.NO_TOKENS);
   return token;
 };
