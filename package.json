@@ -8,7 +8,7 @@
     "cards",
     "card-generator"
   ],
-  "main": "src/express.ts",
+  "main": "src/index.ts",
   "type": "module",
   "homepage": "https://github.com/S1l3ntStr1ke87/gitlab-readme-stats",
   "bugs": {
