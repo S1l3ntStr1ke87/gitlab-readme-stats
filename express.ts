@@ -1,9 +1,9 @@
 import "dotenv/config";
-import statsCard from "./api/index";
-import repoCard from "./api/pin";
-import langCard from "./api/top-langs";
-import wakatimeCard from "./api/wakatime";
-import gistCard from "./api/gist";
+import statsCard from "./src/api/index";
+import repoCard from "./src/api/pin";
+import langCard from "./src/api/top-langs";
+import wakatimeCard from "./src/api/wakatime";
+import gistCard from "./src/api/gist";
 import express from "express";
 
 const app = express();

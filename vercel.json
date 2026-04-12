@@ -8,7 +8,23 @@
   ],
   "routes": [
     {
-      "src": "/api/",
+      "src": "/api/gist",
+      "dest": "src/api/gist.ts"
+    },
+    {
+      "src": "/api/pin",
+      "dest": "src/api/pin.ts"
+    },
+    {
+      "src": "/api/top-langs",
+      "dest": "src/api/top-langs.ts"
+    },
+    {
+      "src": "/api/wakatime",
+      "dest": "src/api/wakatime.ts"
+    },
+    {
+      "src": "/api",
       "dest": "src/api/index.ts"
     },
     {
