@@ -1,6 +1,7 @@
 {
+  "outputDirectory": "src",
   "functions": {
-    "src/api/*.ts": {
+    "api/*.ts": {
       "memory": 128,
       "maxDuration": 10
     }
