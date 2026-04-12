@@ -2,32 +2,18 @@
 
 import { MissingParamError } from "../common/error.js";
 import axios from "axios";
+const languageTypes = require("./snippetFileTypes.json");
 
 /**
  * @param {{ path: string }[]} files
  * @returns {string}
  */
 const calculatePrimaryLanguage = (files) => {
-  /** @type {Record<string, string>} */
-  const extMap = {
-    ts: "TypeScript", js: "JavaScript", jsx: "JavaScript",
-    tsx: "TypeScript", html: "HTML", css: "CSS", scss: "SCSS",
-    sass: "SASS", vue: "Vue", svelte: "Svelte",
-    py: "Python", rb: "Ruby", java: "Java", go: "Go",
-    rs: "Rust", cpp: "C++", c: "C", cs: "C#", php: "PHP",
-    swift: "Swift", kt: "Kotlin", ex: "Elixir", exs: "Elixir",
-    erl: "Erlang", hs: "Haskell", lua: "Lua", r: "R",
-    dart: "Dart", scala: "Scala", clj: "Clojure",
-    sh: "Shell", bash: "Shell", zsh: "Shell", fish: "Shell",
-    ps1: "PowerShell", dockerfile: "Dockerfile",
-    md: "Markdown", json: "JSON", yaml: "YAML", yml: "YAML",
-    toml: "TOML", xml: "XML", csv: "CSV", sql: "SQL",
-    graphql: "GraphQL", proto: "Protobuf",
-  };
-
   for (const file of files) {
     const ext = file.path.split(".").pop()?.toLowerCase() || "";
-    if (extMap[ext]) return extMap[ext];
+    if (/** @type {Record<string, string>} */ (languageTypes)[ext]) {
+      return /** @type {Record<string, string>} */ (languageTypes)[ext];
+    }
   }
   return "Unknown";
 };
