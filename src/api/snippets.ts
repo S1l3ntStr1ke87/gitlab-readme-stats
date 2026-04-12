@@ -1,7 +1,7 @@
 import { renderError } from "../common/render";
 import { isLocaleAvailable } from "../utils/translations";
-import { renderGistCard } from "../cards/gist";
-import { fetchGist } from "../fetchers/gist";
+import { renderSnippetsCard } from "../cards/snippets";
+import { fetchSnippet } from "../fetchers/snippets";
 import {
   CACHE_TTL,
   resolveCacheSeconds,
@@ -37,7 +37,7 @@ export default async (req, res) => {
   const access = guardAccess({
     res,
     id,
-    type: "gist",
+    type: "snippets",
     colors: {
       title_color,
       text_color,
@@ -67,18 +67,18 @@ export default async (req, res) => {
   }
 
   try {
-    const gistData = await fetchGist(id);
+    const snippetsData = await fetchSnippet(id);
     const cacheSeconds = resolveCacheSeconds({
       requested: parseInt(cache_seconds, 10),
-      def: CACHE_TTL.GIST_CARD.DEFAULT,
-      min: CACHE_TTL.GIST_CARD.MIN,
-      max: CACHE_TTL.GIST_CARD.MAX,
+      def: CACHE_TTL.SNIPPETS_CARD.DEFAULT,
+      min: CACHE_TTL.SNIPPETS_CARD.MIN,
+      max: CACHE_TTL.SNIPPETS_CARD.MAX,
     });
 
     setCacheHeaders(res, cacheSeconds);
 
     return res.send(
-      renderGistCard(gistData, {
+      renderSnippetsCard(snippetsData, {
         title_color,
         icon_color,
         text_color,

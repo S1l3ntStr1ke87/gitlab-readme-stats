@@ -27,14 +27,14 @@ const CARD_DEFAULT_WIDTH = 400;
 const HEADER_MAX_LENGTH = 35;
 
 /**
- * Render gist card.
+ * Render snippets card.
  */
-const renderGistCard = (
-  gistData: GistData,
-  options: Partial<GistCardOptions> = {},
+const renderSnippetsCard = (
+  snippetsData: SnippetsData,
+  options: Partial<SnippetsCardOptions> = {},
 ): string => {
   const { name, nameWithOwner, description, language, starsCount, forksCount } =
-    gistData;
+    snippetsData;
   const {
     title_color,
     icon_color,
@@ -141,5 +141,5 @@ const renderGistCard = (
   `);
 };
 
-export { renderGistCard, HEADER_MAX_LENGTH };
-export default renderGistCard;
+export { renderSnippetsCard, HEADER_MAX_LENGTH };
+export default renderSnippetsCard;

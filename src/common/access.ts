@@ -1,9 +1,9 @@
 import { renderError } from "./render";
 import { blacklist } from "./blacklist";
-import { whitelist, gistWhitelist } from "./envs";
+import { whitelist, snippetsWhitelist } from "./envs";
 import type { Response } from "express-serve-static-core";
 
-type AccessType = "username" | "gist" | "wakatime";
+type AccessType = "username" | "snippets" | "wakatime";
 
 interface ColorOptions {
   title_color?: string;
@@ -20,7 +20,7 @@ interface GuardAccessResult {
 }
 
 const NOT_WHITELISTED_USERNAME_MESSAGE = "This username is not whitelisted";
-const NOT_WHITELISTED_GIST_MESSAGE = "This gist ID is not whitelisted";
+const NOT_WHITELISTED_SNIPPETS_MESSAGE = "This snippet ID is not whitelisted";
 const BLACKLISTED_MESSAGE = "This username is blacklisted";
 
 // Guards access using whitelist/blacklist.
@@ -35,16 +35,16 @@ const guardAccess = ({
   type: AccessType;
   colors: ColorOptions;
 }): GuardAccessResult => {
-  if (!["username", "gist", "wakatime"].includes(type)) {
+  if (!["username", "snippets", "wakatime"].includes(type)) {
     throw new Error(
-      'Invalid type. Expected "username", "gist", or "wakatime".',
+      'Invalid type. Expected "username", "snippets", or "wakatime".',
     );
   }
 
-  const currentWhitelist = type === "gist" ? gistWhitelist : whitelist;
+  const currentWhitelist = type === "snippets" ? snippetsWhitelist : whitelist;
   const notWhitelistedMsg =
-    type === "gist"
-      ? NOT_WHITELISTED_GIST_MESSAGE
+    type === "snippets"
+      ? NOT_WHITELISTED_SNIPPETS_MESSAGE
       : NOT_WHITELISTED_USERNAME_MESSAGE;
 
   if (Array.isArray(currentWhitelist) && !currentWhitelist.includes(id)) {

@@ -8,7 +8,12 @@ const toEmoji: {
   get(input: string): string | undefined;
 };
 
-type GistData = {
+type SnippetsFile = {
+  path: string;
+  id: number;
+};
+
+type SnippetsData = {
   name: string;
   nameWithOwner: string;
   description: string | null;
@@ -263,7 +268,7 @@ type WakaTimeOptions = CommonOptions & {
   disable_animations: boolean;
 };
 
-type GistCardOptions = CommonOptions & {
+type SnippetsCardOptions = CommonOptions & {
   show_owner: boolean;
 };
 }
