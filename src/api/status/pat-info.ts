@@ -1,6 +1,6 @@
-import { request } from "../../common/http.js";
-import { logger } from "../../common/log.js";
-import { dateDiff } from "../../common/ops.js";
+import { request } from "../../common/http";
+import { logger } from "../../common/log";
+import { dateDiff } from "../../common/ops";
 
 type PATStatus = "valid" | "expired" | "exhausted" | "suspended" | "error";
 

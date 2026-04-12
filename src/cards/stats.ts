@@ -1,12 +1,12 @@
-import { Card } from "../common/Card.js";
-import { getCardColors } from "../common/color.js";
-import { CustomError } from "../common/error.js";
-import { kFormatter } from "../common/fmt.js";
-import { I18n } from "../common/I18n.js";
-import { icons, rankIcon } from "../common/icons.js";
-import { clampValue } from "../common/ops.js";
-import { flexLayout, measureText } from "../common/render.js";
-import { statCardLocales, wakatimeCardLocales } from "../utils/translations.js";
+import { Card } from "../common/Card";
+import { getCardColors } from "../common/color";
+import { CustomError } from "../common/error";
+import { kFormatter } from "../common/fmt";
+import { I18n } from "../common/I18n";
+import { icons, rankIcon } from "../common/icons";
+import { clampValue } from "../common/ops";
+import { flexLayout, measureText } from "../common/render";
+import { statCardLocales, wakatimeCardLocales } from "../utils/translations";
 
 const CARD_MIN_WIDTH = 287;
 const CARD_DEFAULT_WIDTH = 287;

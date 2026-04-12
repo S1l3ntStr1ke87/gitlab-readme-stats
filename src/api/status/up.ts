@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import { request } from "../../common/http.js";
-import retryer from "../../common/retryer.js";
-import { logger } from "../../common/log.js";
+import { request } from "../../common/http";
+import retryer from "../../common/retryer";
+import { logger } from "../../common/log";
 
 export const RATE_LIMIT_SECONDS = 60 * 5; // 1 request per 5 minutes
 

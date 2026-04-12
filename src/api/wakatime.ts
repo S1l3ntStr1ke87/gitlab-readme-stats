@@ -1,19 +1,19 @@
-import { renderWakatimeCard } from "../cards/wakatime.js";
-import { renderError } from "../common/render.js";
-import { fetchWakatimeStats } from "../fetchers/wakatime.js";
-import { isLocaleAvailable } from "../utils/translations.js";
+import { renderWakatimeCard } from "../cards/wakatime";
+import { renderError } from "../common/render";
+import { fetchWakatimeStats } from "../fetchers/wakatime";
+import { isLocaleAvailable } from "../utils/translations";
 import {
   CACHE_TTL,
   resolveCacheSeconds,
   setCacheHeaders,
   setErrorCacheHeaders,
-} from "../common/cache.js";
-import { guardAccess } from "../common/access.js";
+} from "../common/cache";
+import { guardAccess } from "../common/access";
 import {
   MissingParamError,
   retrieveSecondaryMessage,
-} from "../common/error.js";
-import { parseArray, parseBoolean } from "../common/ops.js";
+} from "../common/error";
+import { parseArray, parseBoolean } from "../common/ops";
 
 // @ts-ignore
 export default async (req, res) => {

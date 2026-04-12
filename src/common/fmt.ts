@@ -1,5 +1,5 @@
 import wrap from "word-wrap";
-import { encodeHTML } from "./html.js";
+import { encodeHTML } from "./html";
 
 
 const kFormatter = (num: number, precision?: number): string | number => {

@@ -1,17 +1,15 @@
-// @ts-check
-
 import {
   measureText,
   flexLayout,
   iconWithLabel,
   createLanguageNode,
-} from "../common/render.js";
-import Card from "../common/Card.js";
-import { getCardColors } from "../common/color.js";
-import { kFormatter, wrapTextMultiline } from "../common/fmt.js";
-import { encodeHTML } from "../common/html.js";
-import { icons } from "../common/icons.js";
-import { parseEmojis } from "../common/ops.js";
+} from "../common/render";
+import Card from "../common/Card";
+import { getCardColors } from "../common/color";
+import { kFormatter, wrapTextMultiline } from "../common/fmt";
+import { encodeHTML } from "../common/html";
+import { icons } from "../common/icons";
+import { parseEmojis } from "../common/ops";
 
 /** Import language colors.
  *
@@ -22,7 +20,7 @@ import { parseEmojis } from "../common/ops.js";
  */
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
-const languageColors = require("../common/languageColors.json"); // now works
+const languageColors = require("../common/languageColors.json");
 
 const ICON_SIZE = 16;
 const CARD_DEFAULT_WIDTH = 400;
@@ -30,10 +28,6 @@ const HEADER_MAX_LENGTH = 35;
 
 /**
  * Render gist card.
- *
- * @param {GistData} gistData Gist data.
- * @param {Partial<GistCardOptions>} options Gist card options.
- * @returns {string} Gist card.
  */
 const renderGistCard = (
   gistData: GistData,

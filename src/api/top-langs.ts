@@ -1,21 +1,19 @@
-// @ts-check
-
-import { renderTopLanguages } from "../cards/top-languages.js";
-import { guardAccess } from "../common/access.js";
+import { renderTopLanguages } from "../cards/top-languages";
+import { guardAccess } from "../common/access";
 import {
   CACHE_TTL,
   resolveCacheSeconds,
   setCacheHeaders,
   setErrorCacheHeaders,
-} from "../common/cache.js";
+} from "../common/cache";
 import {
   MissingParamError,
   retrieveSecondaryMessage,
-} from "../common/error.js";
-import { parseArray, parseBoolean } from "../common/ops.js";
-import { renderError } from "../common/render.js";
-import { fetchTopLanguages } from "../fetchers/top-languages.js";
-import { isLocaleAvailable } from "../utils/translations.js";
+} from "../common/error";
+import { parseArray, parseBoolean } from "../common/ops";
+import { renderError } from "../common/render";
+import { fetchTopLanguages } from "../fetchers/top-languages";
+import { isLocaleAvailable } from "../utils/translations";
 
 // @ts-ignore
 export default async (req, res) => {

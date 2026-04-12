@@ -1,5 +1,5 @@
 import type { Response } from "express-serve-static-core";
-import { clampValue } from "./ops.js";
+import { clampValue } from "./ops";
 
 const MIN = 60;
 const HOUR = 60 * MIN;

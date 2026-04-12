@@ -1,6 +1,6 @@
-import { renderError } from "./render.js";
-import { blacklist } from "./blacklist.js";
-import { whitelist, gistWhitelist } from "./envs.js";
+import { renderError } from "./render";
+import { blacklist } from "./blacklist";
+import { whitelist, gistWhitelist } from "./envs";
 import type { Response } from "express-serve-static-core";
 
 type AccessType = "username" | "gist" | "wakatime";

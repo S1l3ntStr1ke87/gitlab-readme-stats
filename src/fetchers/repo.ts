@@ -1,6 +1,6 @@
-import { MissingParamError } from "../common/error.js";
-import { request } from "../common/http.js";
-import { retryer } from "../common/retryer.js";
+import { MissingParamError } from "../common/error";
+import { request } from "../common/http";
+import { retryer } from "../common/retryer";
 
 const fetcher = (
   variables: Record<string, unknown>,

@@ -1,4 +1,4 @@
-import { encodeHTML } from "../common/html.js";
+import { encodeHTML } from "../common/html";
 
 const statCardLocales = ({
   name,

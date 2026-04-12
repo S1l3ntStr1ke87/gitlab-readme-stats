@@ -1,21 +1,19 @@
-// @ts-check
-
-import { renderError } from "../common/render.js";
-import { isLocaleAvailable } from "../utils/translations.js";
-import { renderGistCard } from "../cards/gist.js";
-import { fetchGist } from "../fetchers/gist.js";
+import { renderError } from "../common/render";
+import { isLocaleAvailable } from "../utils/translations";
+import { renderGistCard } from "../cards/gist";
+import { fetchGist } from "../fetchers/gist";
 import {
   CACHE_TTL,
   resolveCacheSeconds,
   setCacheHeaders,
   setErrorCacheHeaders,
-} from "../common/cache.js";
-import { guardAccess } from "../common/access.js";
+} from "../common/cache";
+import { guardAccess } from "../common/access";
 import {
   MissingParamError,
   retrieveSecondaryMessage,
-} from "../common/error.js";
-import { parseBoolean } from "../common/ops.js";
+} from "../common/error";
+import { parseBoolean } from "../common/ops";
 
 // @ts-ignore
 export default async (req, res) => {

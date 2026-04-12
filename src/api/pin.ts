@@ -1,21 +1,19 @@
-// @ts-check
-
-import { renderRepoCard } from "../cards/repo.js";
-import { guardAccess } from "../common/access.js";
+import { renderRepoCard } from "../cards/repo";
+import { guardAccess } from "../common/access";
 import {
   CACHE_TTL,
   resolveCacheSeconds,
   setCacheHeaders,
   setErrorCacheHeaders,
-} from "../common/cache.js";
+} from "../common/cache";
 import {
   MissingParamError,
   retrieveSecondaryMessage,
-} from "../common/error.js";
-import { parseBoolean } from "../common/ops.js";
-import { renderError } from "../common/render.js";
-import { fetchRepo } from "../fetchers/repo.js";
-import { isLocaleAvailable } from "../utils/translations.js";
+} from "../common/error";
+import { parseBoolean } from "../common/ops";
+import { renderError } from "../common/render";
+import { fetchRepo } from "../fetchers/repo";
+import { isLocaleAvailable } from "../utils/translations";
 
 // @ts-ignore
 export default async (req, res) => {

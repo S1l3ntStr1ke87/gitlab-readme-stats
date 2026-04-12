@@ -1,16 +1,16 @@
 // @ts-check
 
-import { Card } from "../common/Card.js";
-import { getCardColors } from "../common/color.js";
-import { formatBytes } from "../common/fmt.js";
-import { I18n } from "../common/I18n.js";
-import { chunkArray, clampValue, lowercaseTrim } from "../common/ops.js";
+import { Card } from "../common/Card";
+import { getCardColors } from "../common/color";
+import { formatBytes } from "../common/fmt";
+import { I18n } from "../common/I18n";
+import { chunkArray, clampValue, lowercaseTrim } from "../common/ops";
 import {
   createProgressNode,
   flexLayout,
   measureText,
-} from "../common/render.js";
-import { langCardLocales } from "../utils/translations.js";
+} from "../common/render";
+import { langCardLocales } from "../utils/translations";
 
 const DEFAULT_CARD_WIDTH = 300;
 const MIN_CARD_WIDTH = 280;

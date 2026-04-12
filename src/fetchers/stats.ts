@@ -1,12 +1,12 @@
 import axios from "axios";
 import * as dotenv from "dotenv";
-import { calculateRank } from "../utils/calculateRank.js";
-import { retryer } from "../common/retryer.js";
-import { logger } from "../common/log.js";
-import { excludeRepositories } from "../common/envs.js";
-import { CustomError, MissingParamError } from "../common/error.js";
-import { wrapTextMultiline } from "../common/fmt.js";
-import { request } from "../common/http.js";
+import { calculateRank } from "../utils/calculateRank";
+import { retryer } from "../common/retryer";
+import { logger } from "../common/log";
+import { excludeRepositories } from "../common/envs";
+import { CustomError, MissingParamError } from "../common/error";
+import { wrapTextMultiline } from "../common/fmt";
+import { request } from "../common/http";
 
 dotenv.config();
 

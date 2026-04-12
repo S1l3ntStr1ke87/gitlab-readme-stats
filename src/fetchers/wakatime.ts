@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CustomError, MissingParamError } from "../common/error.js";
+import { CustomError, MissingParamError } from "../common/error";
 
 type WakatimeFetcherInput = {
   username?: string;

@@ -1,5 +1,5 @@
-import { encodeHTML } from "./html.js";
-import { flexLayout } from "./render.js";
+import { encodeHTML } from "./html";
+import { flexLayout } from "./render";
 
 interface CardColors {
   titleColor?: string;
