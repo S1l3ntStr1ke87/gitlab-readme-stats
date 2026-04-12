@@ -1,11 +1,11 @@
 {
-  "rootDirectory": "src",
-  "functions": {
-    "api/*.ts": {
-      "memory": 128,
-      "maxDuration": 10
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "builds": [
+    {
+      "src": "src/api/*.ts",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "redirects": [
     {
       "source": "/",
