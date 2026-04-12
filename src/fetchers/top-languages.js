@@ -2,8 +2,6 @@
 import axios from "axios";
 import { excludeRepositories } from "../common/envs.js";
 import { CustomError, MissingParamError } from "../common/error.js";
-import { request } from "../common/http.js";
-import languageColors from "../common/languageColors.json";
 
 /**
  * @returns {string}
@@ -55,6 +53,7 @@ const fetchProjectLanguages = async (projectId, token) => {
   }
 };
 
+const languageColors = require("../common/languageColors.json");
 /**
  * @param {string} name
  * @returns {string}

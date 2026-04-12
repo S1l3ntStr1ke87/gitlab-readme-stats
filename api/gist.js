@@ -3,7 +3,7 @@
 import { renderError } from "../src/common/render.js";
 import { isLocaleAvailable } from "../src/utils/translations.js";
 import { renderGistCard } from "../src/cards/gist.js";
-import { fetchGist } from "../src/fetchers/snippets.js";
+import { fetchGist } from "../src/fetchers/gist.js";
 import {
   CACHE_TTL,
   resolveCacheSeconds,
