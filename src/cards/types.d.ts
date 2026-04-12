@@ -62,6 +62,6 @@ export type WakaTimeOptions = CommonOptions & {
   disable_animations: boolean;
 };
 
-export type GistCardOptions = CommonOptions & {
+export type SnippetsCardOptions = CommonOptions & {
   show_owner: boolean;
 };

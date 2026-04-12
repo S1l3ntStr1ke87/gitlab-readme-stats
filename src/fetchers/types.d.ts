@@ -1,4 +1,4 @@
-export type GistData = {
+export type snippetsData = {
   name: string;
   nameWithOwner: string;
   description: string | null;

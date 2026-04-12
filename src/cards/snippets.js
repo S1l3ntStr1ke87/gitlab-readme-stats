@@ -29,20 +29,20 @@ const CARD_DEFAULT_WIDTH = 400;
 const HEADER_MAX_LENGTH = 35;
 
 /**
- * @typedef {import('./types').GistCardOptions} GistCardOptions Gist card options.
- * @typedef {import('../fetchers/types').GistData} GistData Gist data.
+ * @typedef {import('./types.js').SnippetsCardOptions} SnippetsCardOptions Snippets card options.
+ * @typedef {import('../fetchers/types.js').snippetsData} snippetsData Snippets data.
  */
 
 /**
- * Render gist card.
+ * Render snippets card.
  *
- * @param {GistData} gistData Gist data.
- * @param {Partial<GistCardOptions>} options Gist card options.
- * @returns {string} Gist card.
+ * @param {snippetsData} snippetsData Snippets data.
+ * @param {Partial<SnippetsCardOptions>} options Snippets card options.
+ * @returns {string} Snippets card.
  */
-const renderGistCard = (gistData, options = {}) => {
+const renderSnippetsCard = (snippetsData, options = {}) => {
   const { name, nameWithOwner, description, language, starsCount, forksCount } =
-    gistData;
+    snippetsData;
   const {
     title_color,
     icon_color,
@@ -148,5 +148,5 @@ const renderGistCard = (gistData, options = {}) => {
   `);
 };
 
-export { renderGistCard, HEADER_MAX_LENGTH };
-export default renderGistCard;
+export { renderSnippetsCard, HEADER_MAX_LENGTH };
+export default renderSnippetsCard;
