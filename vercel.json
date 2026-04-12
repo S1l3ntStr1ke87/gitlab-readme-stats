@@ -1,5 +1,5 @@
 {
-  "outputDirectory": "src",
+  "rootDirectory": "src",
   "functions": {
     "api/*.ts": {
       "memory": 128,
