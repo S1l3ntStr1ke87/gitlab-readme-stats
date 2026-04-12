@@ -2,37 +2,14 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "builds": [
     {
-      "src": "src/api/*.ts",
+      "src": "express.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/api/gist",
-      "dest": "src/api/gist.ts"
-    },
-    {
-      "src": "/api/pin",
-      "dest": "src/api/pin.ts"
-    },
-    {
-      "src": "/api/top-langs",
-      "dest": "src/api/top-langs.ts"
-    },
-    {
-      "src": "/api/wakatime",
-      "dest": "src/api/wakatime.ts"
-    },
-    {
-      "src": "/api",
-      "dest": "src/api/index.ts"
-    },
-    {
-      "src": "/",
-      "status": 308,
-      "headers": {
-        "Location": "https://github.com/S1l3ntStr1ke87/gitlab-readme-stats"
-      }
+      "src": "/(.*)",
+      "dest": "express.ts"
     }
   ]
 }
