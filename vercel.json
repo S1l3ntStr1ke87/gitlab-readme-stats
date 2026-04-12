@@ -6,10 +6,17 @@
       "use": "@vercel/node"
     }
   ],
-  "redirects": [
+  "routes": [
     {
-      "source": "/",
-      "destination": "https://github.com/S1l3ntStr1ke87/gitlab-readme-stats"
+      "src": "/api/(.*)",
+      "dest": "src/api/$1.ts"
+    },
+    {
+      "src": "/",
+      "status": 308,
+      "headers": {
+        "Location": "https://github.com/S1l3ntStr1ke87/gitlab-readme-stats"
+      }
     }
   ]
 }
