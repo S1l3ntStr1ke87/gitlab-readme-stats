@@ -9,40 +9,26 @@ const fetcher = (
   return request(
     {
       query: `
-      fragment RepoInfo on Repository {
-        name
-        nameWithOwner
-        isPrivate
-        isArchived
-        isTemplate
-        stargazers {
-          totalCount
-        }
-        description
-        primaryLanguage {
-          color
-          id
-          name
-        }
-        forkCount
-      }
-      query getRepo($login: String!, $repo: String!) {
-        user(login: $login) {
-          repository(name: $repo) {
-            ...RepoInfo
+        query getRepo($fullPath: ID!) {
+          project(fullPath: $fullPath) {
+            name
+            fullPath
+            description
+            archived
+            visibility
+            starCount
+            forksCount
+            languages {
+                name
+                color
+              }
+            }
           }
-        }
-        organization(login: $login) {
-          repository(name: $repo) {
-            ...RepoInfo
-          }
-        }
-      }
-    `,
+      `,
       variables,
     },
     {
-      Authorization: `token ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   );
 };
@@ -63,41 +49,27 @@ const fetchRepo = async (
     throw new MissingParamError(["repo"], urlExample);
   }
 
-  let res = await retryer(fetcher, { login: username, repo: reponame });
+  const res = await retryer(fetcher, { fullPath: `${username}/${reponame}` });
 
-  const data = res.data.data;
+  const project = res.data?.data?.project;
 
-  if (!data.user && !data.organization) {
+  if (!project) {
     throw new Error("Not found");
   }
-
-  const isUser = data.organization === null && data.user;
-  const isOrg = data.user === null && data.organization;
-
-  if (isUser) {
-    if (!data.user.repository || data.user.repository.isPrivate) {
-      throw new Error("User Repository Not found");
-    }
-    return {
-      ...data.user.repository,
-      starCount: data.user.repository.stargazers.totalCount,
-    };
+  if (project.visibility === "private") {
+    throw new Error("Repository Not found");
   }
 
-  if (isOrg) {
-    if (
-      !data.organization.repository ||
-      data.organization.repository.isPrivate
-    ) {
-      throw new Error("Organization Repository Not found");
-    }
-    return {
-      ...data.organization.repository,
-      starCount: data.organization.repository.stargazers.totalCount,
-    };
-  }
-
-  throw new Error("Unexpected behavior");
+  return {
+    ...project,
+    nameWithOwner: project.fullPath,
+    isPrivate: project.visibility === "private",
+    isArchived: project.archived,
+    isTemplate: false,
+    forkCount: project.forksCount,
+    starCount: project.starCount,
+    primaryLanguage: project.languages?.[0] ?? null,
+  };
 };
 
 export { fetchRepo };
