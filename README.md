@@ -60,6 +60,23 @@
   - [Keep your fork up to date](#keep-your-fork-up-to-date)
 </details>
 
+
+# GitLab Stats Card
+
+Copy and paste this into your markdown, and that's it. Simple!
+
+Change the `?username=` value to your GitHub username.
+
+```md
+[![str1k3r's GitLab stats]([https://github-readme-stats.vercel.app/api?username=anuraghazra](https://gitlab-stats.str1k3r.xyz/api?username=S1l3ntStr1ke87))](https://github.com/S1l3ntStr1ke87/gitlab-readme-stats)
+```
+
+> [!WARNING]
+> By default, the stats card only shows statistics like stars, commits, and pull requests from public repositories. To show private statistics on the stats card, you should [deploy your own instance](#deploy-on-your-own) using your own GitLab API token.
+
+> [!NOTE]
+> Available ranks are S (top 1%), A+ (12.5%), A (25%), A- (37.5%), B+ (50%), B (62.5%), B- (75%), C+ (87.5%) and C (everyone). This ranking scheme is based on the [Japanese academic grading](https://wikipedia.org/wiki/Academic_grading_in_Japan) system. The global percentile is calculated as a weighted sum of percentiles for each statistic (number of commits, pull requests, reviews, issues, stars, and followers), based on the cumulative distribution function of the [exponential](https://wikipedia.org/wiki/exponential_distribution) and the [log-normal](https://wikipedia.org/wiki/Log-normal_distribution) distributions. The implementation can be investigated at [src/utils/calculateRank.ts](https://github.com/S1l3ntStr1ke87/gitlab-readme-stats/blob/mastersrc/utils/calculateRank.ts). The circle around the rank shows 100 minus the global percentile.
+
 Inspired by [gitlab-readme-stats](https://gitlab.com/oregand/gitlab-readme-stats) & [github-readme-stats](https://github.com/anuraghazra/github-readme-stats/)
 
 Made with ❤️ and TypeScript.
