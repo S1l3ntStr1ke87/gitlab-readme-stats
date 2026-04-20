@@ -27,7 +27,7 @@
     - [Usage](#usage)
     - [Options](#options)
     - [Demo](#demo)
-- [GitLab Snippets Pins](#github-gist-pins)
+- [GitLab Snippets Pins](#github-snippet-pins)
     - [Usage](#usage-1)
     - [Options](#options-1)
     - [Demo](#demo-1)
@@ -82,7 +82,7 @@ Change the `?username=` value to your GitHub username.
 To enable icons, you can pass `&show_icons=true` in the query param, like so:
 
 ```md
-![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true)
+![str1k3r's GitLab stats](https://gitlab-stats.str1k3r.xyz/api?username=S1l3ntStr1ke87&show_icons=true)
 ```
 
 ### Themes
@@ -92,10 +92,8 @@ With inbuilt themes, you can customize the look of the card without doing any [m
 Use `&theme=THEME_NAME` parameter like so :
 
 ```md
-![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&theme=radical)
+![str1k3r's GitLab stats](https://gitlab-stats.str1k3r.xyz/api?username=S1l3ntStr1ke87&show_icons=true&theme=radical)
 ```
-
-Inspired by [gitlab-readme-stats](https://gitlab.com/oregand/gitlab-readme-stats) & [github-readme-stats](https://github.com/anuraghazra/github-readme-stats/)
 
 ### Customization
 
@@ -117,7 +115,7 @@ You can customize the appearance of all your cards however you wish with URL par
 | `border_radius` | Corner rounding on the card. | number | `4.5` |
 
 > [!WARNING]
-> We use caching to decrease the load on our servers (see <https://github.com/anuraghazra/github-readme-stats/issues/1471#issuecomment-1271551425>). Our cards have the following default cache hours: stats card - 24 hours, top languages card - 144 hours (6 days), pin card - 240 hours (10 days), gist card - 48 hours (2 days), and wakatime card - 24 hours. If you want the data on your cards to be updated more often you can [deploy your own instance](#deploy-on-your-own) and set [environment variable](#available-environment-variables) `CACHE_SECONDS` to a value of your choosing.
+> I use caching to decrease the load on my server. 24 Hours
 
 ##### Gradient in bg\_color
 
@@ -204,10 +202,10 @@ GitLab Pins allow you to pin repositories in your profile using a GitHub readme 
 
 Copy-paste this code into your readme and change the links.
 
-Endpoint: `api/pin?username=S1l3ntStr1ke87&repo=gitlab-readme-stats`
+Endpoint: `api/pin?username=S1l3ntStr1ke87&repo=gitlab-readme-stats-example`
 
 ```md
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=anuraghazra&repo=github-readme-stats)](https://github.com/anuraghazra/github-readme-stats)
+[![Readme Card](https://gitlab-stats.str1k3r.xyz/api/pin/?username=S1l3ntStr1ke87&repo=gitlab-readme-stats-example)](https://github.com/S1l3ntStr1ke87/gitlab-readme-stats)
 ```
 
 ### Options
@@ -221,41 +219,41 @@ You can customize the appearance and behavior of the pinned repository card usin
 
 ### Demo
 
-![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=anuraghazra\&repo=github-readme-stats)
+![Readme Card](https://gitlab-stats.str1k3r.xyz/api/pin/?username=S1l3ntStr1ke87\&repo=gitlab-readme-stats-example)
 
 Use `show_owner` query option to include the repo's owner username
 
-![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=anuraghazra\&repo=github-readme-stats\&show_owner=true)
+![Readme Card](https://gitlab-stats.str1k3r.xyz/api/pin/?username=S1l3ntStr1ke87\&repo=gitlab-readme-stats-example\&show_owner=true)
 
-# GitHub Gist Pins
+# GitHub Snippet Pins
 
-GitHub gist pins allow you to pin gists in your GitHub profile using a GitHub readme profile.
+GitHub Snippet pins allow you to pin snippets in your GitHub profile using a GitHub readme profile.
 
 ### Usage
 
 Copy-paste this code into your readme and change the links.
 
-Endpoint: `api/gist?id=bbfce31e0217a3689c8d961a356cb10d`
+Endpoint: `api/snippets?id=5982226`
 
 ```md
-[![Gist Card](https://github-readme-stats.vercel.app/api/gist?id=bbfce31e0217a3689c8d961a356cb10d)](https://gist.github.com/Yizack/bbfce31e0217a3689c8d961a356cb10d/)
+[![Snippet Card](https://gitlab-stats.str1k3r.xyz/api/snippets?id=5982226)](https://gitlab.com/-/snippets/5982226)
 ```
 
 ### Options
 
-You can customize the appearance and behavior of the gist card using the [common options](#common-options) and exclusive options listed in the table below.
+You can customize the appearance and behavior of the snippet card using the [common options](#common-options) and exclusive options listed in the table below.
 
 | Name | Description | Type | Default value |
 | --- | --- | --- | --- |
-| `show_owner` | Shows the gist's owner name. | boolean | `false` |
+| `show_owner` | Shows the snippet's owner name. | boolean | `false` |
 
 ### Demo
 
-![Gist Card](https://github-readme-stats.vercel.app/api/gist?id=bbfce31e0217a3689c8d961a356cb10d)
+![Snippet Card](https://gitlab-stats.str1k3r.xyz/api/snippets?id=5982226)
 
-Use `show_owner` query option to include the gist's owner username
+Use `show_owner` query option to include the snippet's owner username
 
-![Gist Card](https://github-readme-stats.vercel.app/api/gist?id=bbfce31e0217a3689c8d961a356cb10d\&show_owner=true)
+![Snippet Card](https://gitlab-stats.str1k3r.xyz/api/snippets?id=5982226\&show_owner=true)
 
 # Top Languages Card
 
@@ -265,22 +263,18 @@ The top languages card shows a GitHub user's most frequently used languages.
 > By default, the language card shows language results only from public repositories. To include languages used in private repositories, you should [deploy your own instance](#deploy-on-your-own) using your own GitHub API token.
 
 > [!NOTE]
-> Top Languages does not indicate the user's skill level or anything like that; it's a GitHub metric to determine which languages have the most code on GitHub. It is a new feature of github-readme-stats.
-
-> [!WARNING]
-> This card shows language usage only inside your own non-forked repositories, not depending on who the author of the commits is. It does not include your contributions into another users/organizations repositories. Currently there are no way to get this data from GitHub API. If you want this behavior to be improved you can support [this feature request](https://github.com/orgs/community/discussions/18230) created by [@rickstaa](https://github.com/rickstaa) inside GitHub Community.
-
-> [!WARNING]
-> Currently this card shows data only about first 100 repositories. This is because GitHub API limitations which cause downtimes of public instances (see [#1471](https://github.com/anuraghazra/github-readme-stats/issues/1471)). In future this behavior will be improved by releasing GitHub action or providing environment variables for user's own instances.
+> Top Languages does not indicate the user's skill level or anything like that; it's a GitLab metric to determine which languages have the most code.
 
 ### Usage
 
 Copy-paste this code into your readme and change the links.
 
-Endpoint: `api/top-langs?username=anuraghazra`
+Endpoint: `api/top-langs?username=S1l3ntStr1ke87`
 
 ```md
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=anuraghazra)](https://github.com/anuraghazra/github-readme-stats)
+[![Top Langs](https://gitlab-stats.str1k3r.xyz/api/top-langs/?username=S1l3ntStr1ke87)](https://github.com/S1l3ntStr1ke87/gitlab-readme-stats)
 ```
+
+Inspired by [gitlab-readme-stats](https://gitlab.com/oregand/gitlab-readme-stats) & [github-readme-stats](https://github.com/anuraghazra/github-readme-stats/)
 
 Made with ❤️ and TypeScript.
