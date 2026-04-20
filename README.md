@@ -77,6 +77,210 @@ Change the `?username=` value to your GitHub username.
 > [!NOTE]
 > Available ranks are S (top 1%), A+ (12.5%), A (25%), A- (37.5%), B+ (50%), B (62.5%), B- (75%), C+ (87.5%) and C (everyone). This ranking scheme is based on the [Japanese academic grading](https://wikipedia.org/wiki/Academic_grading_in_Japan) system. The global percentile is calculated as a weighted sum of percentiles for each statistic (number of commits, pull requests, reviews, issues, stars, and followers), based on the cumulative distribution function of the [exponential](https://wikipedia.org/wiki/exponential_distribution) and the [log-normal](https://wikipedia.org/wiki/Log-normal_distribution) distributions. The implementation can be investigated at [src/utils/calculateRank.ts](https://github.com/S1l3ntStr1ke87/gitlab-readme-stats/blob/main/src/utils/calculateRank.ts). The circle around the rank shows 100 minus the global percentile.
 
+### Showing icons
+
+To enable icons, you can pass `&show_icons=true` in the query param, like so:
+
+```md
+![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true)
+```
+
+### Themes
+
+With inbuilt themes, you can customize the look of the card without doing any [manual customization](#customization).
+
+Use `&theme=THEME_NAME` parameter like so :
+
+```md
+![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&theme=radical)
+```
+
 Inspired by [gitlab-readme-stats](https://gitlab.com/oregand/gitlab-readme-stats) & [github-readme-stats](https://github.com/anuraghazra/github-readme-stats/)
+
+### Customization
+
+You can customize the appearance of all your cards however you wish with URL parameters.
+
+#### Common Options
+
+| Name | Description | Type | Default value |
+| --- | --- | --- | --- |
+| `title_color` | Card's title color. | string (hex color) | `2f80ed` |
+| `text_color` | Body text color. | string (hex color) | `434d58` |
+| `icon_color` | Icons color if available. | string (hex color) | `4c71f2` |
+| `border_color` | Card's border color. Does not apply when `hide_border` is enabled. | string (hex color) | `e4e2e2` |
+| `bg_color` | Card's background color. | string (hex color or a gradient in the form of *angle,start,end*) | `fffefe` |
+| `hide_border` | Hides the card's border. | boolean | `false` |
+| `theme` | Name of the theme, choose from [all available themes](themes/README.md). | enum | `default` |
+| `cache_seconds` | Sets the cache header manually (min: 21600, max: 86400). | integer | `21600` |
+| `locale` | Sets the language in the card, you can check full list of available locales [here](#available-locales). | enum | `en` |
+| `border_radius` | Corner rounding on the card. | number | `4.5` |
+
+> [!WARNING]
+> We use caching to decrease the load on our servers (see <https://github.com/anuraghazra/github-readme-stats/issues/1471#issuecomment-1271551425>). Our cards have the following default cache hours: stats card - 24 hours, top languages card - 144 hours (6 days), pin card - 240 hours (10 days), gist card - 48 hours (2 days), and wakatime card - 24 hours. If you want the data on your cards to be updated more often you can [deploy your own instance](#deploy-on-your-own) and set [environment variable](#available-environment-variables) `CACHE_SECONDS` to a value of your choosing.
+
+##### Gradient in bg\_color
+
+You can provide multiple comma-separated values in the bg\_color option to render a gradient with the following format:
+
+    &bg_color=DEG,COLOR1,COLOR2,COLOR3...COLOR10
+
+##### Available locales
+
+Here is a list of all available locales:
+
+<table>
+<tr><td>
+
+| Code | Locale |
+| --- | --- |
+| `ar` | Arabic |
+| `az` | Azerbaijani |
+| `bn` | Bengali |
+| `bg` | Bulgarian |
+| `my` | Burmese |
+| `ca` | Catalan |
+| `cn` | Chinese |
+| `zh-tw` | Chinese (Taiwan) |
+| `cs` | Czech |
+| `nl` | Dutch |
+| `en` | English |
+| `fil` | Filipino |
+| `fi` | Finnish |
+| `fr` | French |
+| `de` | German |
+| `el` | Greek |
+
+</td><td>
+
+| Code | Locale |
+| --- | --- |
+| `he` | Hebrew |
+| `hi` | Hindi |
+| `hu` | Hungarian |
+| `id` | Indonesian |
+| `it` | Italian |
+| `ja` | Japanese |
+| `kr` | Korean |
+| `ml` | Malayalam |
+| `np` | Nepali |
+| `no` | Norwegian |
+| `fa` | Persian (Farsi) |
+| `pl` | Polish |
+| `pt-br` | Portuguese (Brazil) |
+| `pt-pt` | Portuguese (Portugal) |
+| `ro` | Romanian |
+
+</td><td>
+
+| Code | Locale |
+| --- | --- |
+| `ru` | Russian |
+| `sa` | Sanskrit |
+| `sr` | Serbian (Cyrillic) |
+| `sr-latn` | Serbian (Latin) |
+| `sk` | Slovak |
+| `es` | Spanish |
+| `sw` | Swahili |
+| `se` | Swedish |
+| `ta` | Tamil |
+| `th` | Thai |
+| `tr` | Turkish |
+| `uk-ua` | Ukrainian |
+| `ur` | Urdu |
+| `uz` | Uzbek |
+| `vi` | Vietnamese |
+
+</td></tr>
+</table>
+
+If we don't support your language, please consider contributing
+
+# GitLab Pins
+
+GitLab Pins allow you to pin repositories in your profile using a GitHub readme profile.
+
+### Usage
+
+Copy-paste this code into your readme and change the links.
+
+Endpoint: `api/pin?username=S1l3ntStr1ke87&repo=gitlab-readme-stats`
+
+```md
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=anuraghazra&repo=github-readme-stats)](https://github.com/anuraghazra/github-readme-stats)
+```
+
+### Options
+
+You can customize the appearance and behavior of the pinned repository card using the [common options](#common-options) and exclusive options listed in the table below.
+
+| Name | Description | Type | Default value |
+| --- | --- | --- | --- |
+| `show_owner` | Shows the repo's owner name. | boolean | `false` |
+| `description_lines_count` | Manually set the number of lines for the description. Specified value will be clamped between 1 and 3. If this parameter is not specified, the number of lines will be automatically adjusted according to the actual length of the description. | number | `null` |
+
+### Demo
+
+![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=anuraghazra\&repo=github-readme-stats)
+
+Use `show_owner` query option to include the repo's owner username
+
+![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=anuraghazra\&repo=github-readme-stats\&show_owner=true)
+
+# GitHub Gist Pins
+
+GitHub gist pins allow you to pin gists in your GitHub profile using a GitHub readme profile.
+
+### Usage
+
+Copy-paste this code into your readme and change the links.
+
+Endpoint: `api/gist?id=bbfce31e0217a3689c8d961a356cb10d`
+
+```md
+[![Gist Card](https://github-readme-stats.vercel.app/api/gist?id=bbfce31e0217a3689c8d961a356cb10d)](https://gist.github.com/Yizack/bbfce31e0217a3689c8d961a356cb10d/)
+```
+
+### Options
+
+You can customize the appearance and behavior of the gist card using the [common options](#common-options) and exclusive options listed in the table below.
+
+| Name | Description | Type | Default value |
+| --- | --- | --- | --- |
+| `show_owner` | Shows the gist's owner name. | boolean | `false` |
+
+### Demo
+
+![Gist Card](https://github-readme-stats.vercel.app/api/gist?id=bbfce31e0217a3689c8d961a356cb10d)
+
+Use `show_owner` query option to include the gist's owner username
+
+![Gist Card](https://github-readme-stats.vercel.app/api/gist?id=bbfce31e0217a3689c8d961a356cb10d\&show_owner=true)
+
+# Top Languages Card
+
+The top languages card shows a GitHub user's most frequently used languages.
+
+> [!WARNING]
+> By default, the language card shows language results only from public repositories. To include languages used in private repositories, you should [deploy your own instance](#deploy-on-your-own) using your own GitHub API token.
+
+> [!NOTE]
+> Top Languages does not indicate the user's skill level or anything like that; it's a GitHub metric to determine which languages have the most code on GitHub. It is a new feature of github-readme-stats.
+
+> [!WARNING]
+> This card shows language usage only inside your own non-forked repositories, not depending on who the author of the commits is. It does not include your contributions into another users/organizations repositories. Currently there are no way to get this data from GitHub API. If you want this behavior to be improved you can support [this feature request](https://github.com/orgs/community/discussions/18230) created by [@rickstaa](https://github.com/rickstaa) inside GitHub Community.
+
+> [!WARNING]
+> Currently this card shows data only about first 100 repositories. This is because GitHub API limitations which cause downtimes of public instances (see [#1471](https://github.com/anuraghazra/github-readme-stats/issues/1471)). In future this behavior will be improved by releasing GitHub action or providing environment variables for user's own instances.
+
+### Usage
+
+Copy-paste this code into your readme and change the links.
+
+Endpoint: `api/top-langs?username=anuraghazra`
+
+```md
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=anuraghazra)](https://github.com/anuraghazra/github-readme-stats)
+```
 
 Made with ❤️ and TypeScript.
