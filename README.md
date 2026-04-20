@@ -5,8 +5,6 @@
 </div>
 
 <p align="center">
-  <br />
-  <br />
   <a href="https://www.docker.com/">
     <img src="./.github/powered-by-docker.png"/>
   </a>
