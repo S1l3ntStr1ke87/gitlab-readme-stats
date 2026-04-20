@@ -332,7 +332,6 @@ You can use the `&stats_format=bytes` option to display the stats in bytes inste
 ![Top Langs](https://gitlab-stats.str1k3r.xyz/api/top-langs/?username=S1l3ntStr1ke87&stats_format=bytes)
 ```
 
-
 ### Demo
 
 ![Top Langs](https://gitlab-stats.str1k3r.xyz/api/top-langs/?username=S1l3ntStr1ke87)
