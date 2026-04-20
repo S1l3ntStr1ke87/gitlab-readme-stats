@@ -363,4 +363,7 @@ You can use the `&stats_format=bytes` option to display the stats in bytes inste
 
 Inspired by [gitlab-readme-stats](https://gitlab.com/oregand/gitlab-readme-stats) & [github-readme-stats](https://github.com/S1l3ntStr1ke87/gitlab-readme-stats/)
 
+> [!WARNING]
+> Please remember to redeploy your instance after making any changes to the environment variables so that the updates take effect. The changes will not be applied to the previous deployments.
+
 Made with ❤️ and TypeScript.
