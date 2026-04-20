@@ -5,9 +5,6 @@
 </div>
 
 <p align="center">
-  <a href="https://www.docker.com/">
-    <img src="./.github/powered-by-docker.png"/>
-  </a>
   <a href="https://vercel.com?utm\_source=github\_readme\_stats\_team\&utm\_campaign=oss">
     <img src="./.github/powered-by-vercel.svg"/>
   </a>
